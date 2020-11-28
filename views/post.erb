@@ -10,10 +10,20 @@
 
 <br>
 
+	<% @comments.each do |comment| %>
+		<div class="jumbotron jumbotron-fluid">
+		  <div class="container">
+		    <h1 class="display-4"><%= comment['id'] %></h1>
+		    <p class="lead"><%= comment['created_date'] %></p>
+		    <p class="lead"><%= comment['content'] %></p>
+		  </div>
+		</div>
+	<% end %>
 
-<form action="/post/<%= @row['id'] %>" method="POST">
-	<div class="form-group">
-	    <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="7" placeholder="Type comment text here"></textarea>
-	</div>
-	<button type="submit" class="btn btn-primary">Add comment</button>
-</form>
+	<form action="/post/<%= @row['id'] %>" method="POST">
+		<div class="form-group">
+		    <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="7" placeholder="Type comment text here"></textarea>
+		</div>
+		<button type="submit" class="btn btn-primary">Add comment</button>
+	</form>
+
