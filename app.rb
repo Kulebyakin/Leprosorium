@@ -66,14 +66,16 @@ end
 post '/post/:post_id' do
   post_id = params[:post_id]
   content = params[:content]
-  erb "You pyped #{post_id} #{content}"
+  erb "You typed #{post_id} #{content}"
 
   if content.length <= 0
     @error = 'type post text'
     return erb :new
   end
 
-  @db.execute 'insert into comments (content, created_date) values (?, datetime())', [content]
+  @db.execute 'insert into comments 
+  (content, created_date, post_id) values 
+  (?, datetime(), ?)', [content, post_id]
 
-  redirect to '/post/:post_id'
+  redirect to '/post/' + post_id
 end
