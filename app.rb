@@ -53,3 +53,10 @@ get '/post/:post_id' do
 
   erb :post
 end
+
+
+post '/post/:post_id' do
+  post_id = params[:post_id]
+  content = params[:content]
+  erb "You pyped #{post_id} #{content}"
+end
