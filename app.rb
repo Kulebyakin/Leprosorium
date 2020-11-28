@@ -20,6 +20,14 @@ configure do
     created_date DATE,
     content TEXT
   )'
+
+  @db.execute 'CREATE TABLE IF NOT EXISTS comments 
+  (
+    id  INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_date DATE,
+    content TEXT,
+    post_id INTEGER
+  )'
 end
 
 get '/' do
@@ -59,4 +67,13 @@ post '/post/:post_id' do
   post_id = params[:post_id]
   content = params[:content]
   erb "You pyped #{post_id} #{content}"
+
+  if content.length <= 0
+    @error = 'type post text'
+    return erb :new
+  end
+
+  @db.execute 'insert into comments (content, created_date) values (?, datetime())', [content]
+
+  redirect to '/post/:post_id'
 end
