@@ -14,7 +14,10 @@
     <% @results.each do |post| %>
     <tr>
       <th scope="row"><%= post['id'] %></th>
-      <td><%= post['content'] %></td>
+      <td><%= post['content'] %>
+        <br>
+        <a href="/post/<%= post['id'] %>">Comments</a>
+      </td>
       <td><%= post['created_date'] %></td>
     </tr>
     <% end %>
