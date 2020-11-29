@@ -55,7 +55,9 @@ post '/new' do
     return erb :new
   end
   
-  @db.execute 'insert into posts (content, created_date, username) values (?, datetime(), ?)', [content, username]
+  @db.execute 'insert into posts 
+  (content, created_date, username) values 
+  (?, datetime(), ?)', [content, username]
 
   redirect to '/'
 end
@@ -65,7 +67,8 @@ get '/post/:post_id' do
   results = @db.execute 'select * from posts where id = ?', [post_id]
   @row = results[0]
 
-  @comments = @db.execute 'select * from comments where post_id = ? order by id desc', [post_id]
+  @comments = @db.execute 'select * from comments
+   where post_id = ? order by id desc', [post_id]
 
   erb :post
 end
@@ -74,11 +77,11 @@ end
 post '/post/:post_id' do
   post_id = params[:post_id]
   content = params[:content]
-  erb "You typed #{post_id} #{content}"
 
   if content.length <= 0
-    @error = 'type post text'
-    return erb :new
+    @error = 'Type comment text'
+    #return erb :post
+    redirect to '/post/' + post_id
   end
 
   @db.execute 'insert into comments 
