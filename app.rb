@@ -4,7 +4,7 @@ require 'sinatra/reloader'
 require 'sinatra/activerecord'
 require 'sqlite3'
 
-set :database, {adapter: "sqlite3", database: "barbershop.db"}
+set :database, {adapter: "sqlite3", database: "leprosorium.db"}
 
 class Post < ActiveRecord::Base
 end
@@ -14,7 +14,7 @@ end
 
 
 get '/' do
-  @posts = Post.all
+  @posts = Post.order 'created_at DESC'
   erb :index
 
 end
@@ -37,9 +37,12 @@ post '/new' do
     return erb :new
   end
   
-  @db.execute 'insert into posts 
-  (content, created_date, username) values 
-  (?, datetime(), ?)', [content, username]
+  @c = Post.new params[:post]
+  @c.save
+
+  #@db.execute 'insert into posts 
+  #(content, created_date, username) values 
+  #(?, datetime(), ?)', [content, username]
 
   redirect to '/'
 end
