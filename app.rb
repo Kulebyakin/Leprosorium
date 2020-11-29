@@ -1,38 +1,20 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sinatra/activerecord'
 require 'sqlite3'
 
-def init_db
-  @db = SQLite3::Database.new 'Leprosorium.db'
-  @db.results_as_hash = true
+set :database, {adapter: "sqlite3", database: "barbershop.db"}
+
+class Post < ActiveRecord::Base
 end
 
-before do
-  init_db
+class Comment < ActiveRecord::Base
 end
 
-configure do
-  init_db
-  @db.execute 'CREATE TABLE IF NOT EXISTS posts 
-  (
-    id  INTEGER PRIMARY KEY AUTOINCREMENT,
-    created_date DATE,
-    content TEXT,
-    username TEXT
-  )'
-
-  @db.execute 'CREATE TABLE IF NOT EXISTS comments 
-  (
-    id  INTEGER PRIMARY KEY AUTOINCREMENT,
-    created_date DATE,
-    content TEXT,
-    post_id INTEGER
-  )'
-end
 
 get '/' do
-  @results = @db.execute 'select * from posts order by id desc'
+  @posts = Post.all
   erb :index
 
 end
