@@ -5,6 +5,7 @@
   <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Username</th>
       <th scope="col">Content</th>
       <th scope="col">Date</th>
     </tr>
@@ -14,6 +15,7 @@
     <% @results.each do |post| %>
     <tr>
       <th scope="row"><%= post['id'] %></th>
+      <td><%= post['username'] %></td>
       <td><%= post['content'] %>
         <br>
         <a href="/post/<%= post['id'] %>">Comments</a>
