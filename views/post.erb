@@ -1,9 +1,9 @@
 <h2>Post </h2>
 
 <div class="jumbotron">
-  <h1 class="display-4">Post id = <%= @row['id'] %></h1>
-  <p class="lead"><%= @row['created_date'] %></p>
-  <hr class="my-4"><p><%= @row['content'] %></p>
+  <h1 class="display-4">Post id = <%= @post['id'] %></h1>
+  <p class="lead"><%= @post['created_date'] %></p>
+  <hr class="my-4"><p><%= @post['content'] %></p>
 </div>
 
 <h2>Comments:</h2>
@@ -20,9 +20,10 @@
 		</div>
 	<% end %>
 
-	<form action="/post/<%= @row['id'] %>" method="POST">
+	<form action="/post/<%= @post['id'] %>" method="POST">
 		<div class="form-group">
-		    <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="7" placeholder="Type comment text here"></textarea>
+		    <textarea name="comment[content]" class="form-control" id="exampleFormControlTextarea1" rows="7" placeholder="Type comment text here"></textarea>
+		    <input type="hidden" name="comment[post_id]" value="<%= @post['id'] %>">
 		</div>
 		<button type="submit" class="btn btn-primary">Add comment</button>
 	</form>

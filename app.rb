@@ -7,9 +7,11 @@ require 'sqlite3'
 set :database, {adapter: "sqlite3", database: "leprosorium.db"}
 
 class Post < ActiveRecord::Base
+  has_many :comments
 end
 
 class Comment < ActiveRecord::Base
+  belongs_to :post
 end
 
 
@@ -40,38 +42,31 @@ post '/new' do
   @c = Post.new params[:post]
   @c.save
 
-  #@db.execute 'insert into posts 
-  #(content, created_date, username) values 
-  #(?, datetime(), ?)', [content, username]
-
   redirect to '/'
 end
 
 get '/post/:post_id' do
   post_id = params[:post_id]
-  results = @db.execute 'select * from posts where id = ?', [post_id]
-  @row = results[0]
 
-  @comments = @db.execute 'select * from comments
-   where post_id = ? order by id desc', [post_id]
-
+  @post = Post.find(params[:post_id])
+  @comments = Comment.where(post_id: params[:post_id])
+  
   erb :post
 end
 
 
 post '/post/:post_id' do
   post_id = params[:post_id]
-  content = params[:content]
+  #redirect to '/post/' + post_id
 
-  if content.length <= 0
-    @error = 'Type comment text'
-    #return erb :post
-    redirect to '/post/' + post_id
+  @c = Comment.new params[:comment]
+  @c.save
+  if @c.save 
+    erb "ok, everythings good"
+  else
+    @error = @c.errors.full_messages.first
+    erb :index
   end
-
-  @db.execute 'insert into comments 
-  (content, created_date, post_id) values 
-  (?, datetime(), ?)', [content, post_id]
 
   redirect to '/post/' + post_id
 end
